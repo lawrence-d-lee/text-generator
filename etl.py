@@ -9,8 +9,10 @@ import random
 import os
 
 
-
 def get_json(URL):
+    """
+    Takes a URL from a rightmove search and returns the page's corrosponding json file.
+    """
     page = requests.get(URL)
     soup = BeautifulSoup(page.content, "html.parser")
     relevant_part = soup.find_all("script")
@@ -20,6 +22,9 @@ def get_json(URL):
 
 
 def get_region_code(location):
+    """
+    Takes a rightmove json and converts the relevant data to a pandas DataFrame.
+    """
     response = requests.get(
         "https://www.rightmove.co.uk/house-prices/" + location + ".html"
     )
@@ -42,6 +47,9 @@ def create_url(
     property_type="",
     index="",
 ):
+    """
+    Takes a variety of housing features and creates the rightmove URL needed to search for houses with the desired features.
+    """
     base_url = "https://www.rightmove.co.uk/property-for-sale/find.html?"
     location_code = get_region_code(location)
     params = {
@@ -53,7 +61,7 @@ def create_url(
         "minBedrooms": min_bedrooms,
         "maxBedrooms": max_bedrooms,
         "minBathrooms": min_bathrooms,
-        "maxBathrooms": "",
+        "maxBathrooms": max_bathrooms,
         "propertyTypes": property_type,
         "index": index,
     }
@@ -81,6 +89,10 @@ def create_url_list(
     radius="",
     property_type="",
 ):
+    """
+    Takes a variety of housing features and creates a list of all rightmove URLs needed to search for houses with the desired features.
+    """
+
     def get_index(i):
         return create_url(
             location,
@@ -105,6 +117,9 @@ def create_url_list(
 
 
 def download_jsons(url_list):
+    """
+    Takes a list of rightmove URLs and returns a list of their corrosponding json files.
+    """
     threads = min(30, len(url_list))
     json_list = []
     with concurrent.futures.ThreadPoolExecutor(max_workers=threads) as executor:
@@ -115,6 +130,9 @@ def download_jsons(url_list):
 
 
 def create_df(jsons):
+    """
+    Takes a list of rightmove jsons and creates a pandas DataFrame with the desired information.
+    """
     df = pd.DataFrame(columns=["Summary"])
     for json in jsons:
         new_df = json_to_df(json)
@@ -133,6 +151,9 @@ def create_table(
     radius="",
     property_type="",
 ):
+    """
+    Creates a pandas DataFrame of all rightmove data corrosponding to the input information.
+    """
     return create_df(
         download_jsons(
             create_url_list(
@@ -150,20 +171,25 @@ def create_table(
     )
 
 
-def create_full_table(city_list):
-    df = pd.DataFrame(columns=["Summary"])
+def etl(city_list):
+    """
+    Takes a list of cities, then performs an ETL process to create a pandas DataFrame contaning property data from each city.
+    """
     for city in city_list:
-        new_df = create_table(city)
-        df = pd.concat([df, new_df], ignore_index=True, axis=0)
+        data = create_table(city)
+        directory = os.getcwd()
+        isExist = os.path.exists(directory + "\\data\\")
+        if not isExist:
+            os.makedirs(directory + "\\data\\")
+        data.to_csv(directory + "\\data\\" + city.lower(), index=False)
         time.sleep(random.randint(5, 10))
         print(city + " is loaded")
-    return df.drop_duplicates()
 
 
 city_list = [
     "Aberdeen",
     "Bath",
-    "Bangor"
+    "Bangor",
     "Birmingham",
     "Bradford",
     "Brighton",
@@ -223,6 +249,4 @@ city_list = [
     "York",
 ]
 
-estate_agent_data = create_full_table(city_list)
-
-estate_agent_data.to_csv(os.getcwd() + "estate_agent_data", index=False)
+etl(city_list)
