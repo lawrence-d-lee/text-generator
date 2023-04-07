@@ -70,6 +70,9 @@ def create_url(
 
 
 def json_to_df(json):
+    """
+    Takes a rightmove json and converts the relevant data to a pandas DataFrame.
+    """
     df = pd.DataFrame(columns=["Summary"])
     for i in range(len(json["properties"])):
         df.loc[i] = [

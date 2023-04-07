@@ -2,6 +2,9 @@ import pandas as pd
 import os
 
 def create_full_df():
+    """
+    Converts a collection of pandas DataFrames of text data to a single csv.
+    """
     full_df = pd.DataFrame(columns = ["Summary"])
     directory = os.getcwd()
     for filename in os.listdir(directory + "\\data\\"):

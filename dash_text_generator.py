@@ -31,7 +31,7 @@ app.layout = html.Div(
                     children="Estate Agent Text Generator", className="header-title"
                 ),
                 html.P(
-                    children="Uses an LSTM to generate text in the style of estate agents. Click generate to see the results (it might take a few seconds).",
+                    children="Uses an LSTM (a type of neural network) to generate text in the style of estate agents. Click generate to see the results (it might take a few seconds).",
                     className="header-description",
                 ),
             ],
