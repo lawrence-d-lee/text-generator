@@ -94,7 +94,6 @@ def generate_random_word(tokenizer, num_words):
         random_number = random.randint(0, num_words)
         random_word = word_list[random_number]
         random_word_count = word_counts[random_word]
-        print(random_word, random_word_count)
     return random_word
 
 
