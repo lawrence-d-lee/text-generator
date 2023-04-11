@@ -1,4 +1,4 @@
-# NLP-Project
+# Estate Agent Text Generator
 
 This is a dash app built with TensorFlow, which uses an LSTM (a type of neural network) to generate text in the style of estate agents.
 
