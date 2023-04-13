@@ -5,18 +5,18 @@ import pandas as pd
 import numpy as np
 import os
 import time
-from text_generator import *
+import text_generator as tg
 
 import dash
 import flask
 from dash import Dash, dcc, html, Input, Output, State
 import dash_bootstrap_components as dbc
 
-tokenized_sentences, num_words, tokenizer = tokenize(get_data())
-padded_sequences, max_length = get_padded_sequences(
-    get_training_sequences(tokenized_sentences)
+tokenized_sentences, num_words, tokenizer = tg.tokenize(tg.get_data())
+padded_sequences, max_length = tg.get_padded_sequences(
+    tg.get_training_sequences(tokenized_sentences)
 )
-predictors, targets = get_training_data(padded_sequences)
+predictors, targets = tg.get_training_data(padded_sequences)
 model = tf.keras.models.load_model("tensorflow_model")
 
 
@@ -31,7 +31,7 @@ app.layout = html.Div(
                     children="Estate Agent Text Generator", className="header-title"
                 ),
                 html.P(
-                    children="Uses an LSTM (a type of neural network) to generate text in the style of estate agents. Click generate to see the results (it might take a few seconds).",
+                    children="Uses an LSTM (a type of neural network) to generate text in the style of estate agents. Click generate to see the results (it might take around 10 seconds).",
                     className="header-description",
                 ),
             ],
@@ -46,8 +46,8 @@ app.layout = html.Div(
 @app.callback(Output("output_text", "children"), Input("generate_button", "n_clicks"))
 def get_generated_text(click):
     if click is not None:
-        random_word = generate_random_word(tokenizer, num_words)
-        return text_generator(random_word, model, max_length, tokenizer)
+        random_word = tg.generate_random_word(tokenizer, num_words)
+        return tg.text_generator(random_word, model, max_length, tokenizer)
 
 
 if __name__ == "__main__":
