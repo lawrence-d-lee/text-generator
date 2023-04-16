@@ -14,6 +14,10 @@ jobs:
 
     steps:
     - uses: actions/checkout@v3
+    with:
+    registry: ghcr.io
+    username: ${{ github.actor }}
+    password: ${{ secrets.TOKEN }}
     - name: Build the Docker image
       run: | 
            docker build . --file Dockerfile --tag ghcr.io/lawrence-d-lee/my-image-name:latest
