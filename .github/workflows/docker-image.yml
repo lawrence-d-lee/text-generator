@@ -15,7 +15,7 @@ jobs:
     steps:
     - uses: actions/checkout@v3
     - name: Build the Docker image
-      run: docker build . --file Dockerfile --tag text_generator:latest
-           docker run ghcr.io/lawrence-d-lee/text_generator:latest
+      run: docker build . --file Dockerfile --tag text_generator
            docker push ghcr.io/lawrence-d-lee/text_generator:latest
+
            
