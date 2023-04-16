@@ -23,6 +23,6 @@ jobs:
 
           - name: 'Build Inventory Image'
             run: |
-              docker build . --tag ghcr.io/lawrence-d-lee/store:latest
-              docker push ghcr.io/lawrence-d-lee/store:latest
+              docker build . --tag ghcr.io/lawrence-d-lee/text_generator:latest
+              docker push ghcr.io/lawrence-d-lee/text_generator:latest
 
