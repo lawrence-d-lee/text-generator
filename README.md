@@ -2,20 +2,10 @@
 
 This is a dash app built with TensorFlow, which uses an LSTM (a type of neural network) to generate text in the style of estate agents.
 
-To run the app, clone the repo to your desktop.
+### Run the app using Docker
+```
+1. docker pull ghcr.io/lawrence-d-lee/text_generator:latest
+2. docker run -p 8050:8050 ghcr.io/lawrence-d-lee/text_generator:latest
+```
 
-### Run the app using Docker (recommended)
-```
-1. cd text-generator
-2. docker build . -t dash_text_app
-3. docker run -p 8050:8050 dash_text_app
-```
-### Run the app without Docker
-```
-1. cd text-generator
-2. python -m venv venv
-3. venv\Scripts\activate
-4. pip install -r requirements.txt
-5. python dash_text_generator.py
-```
 Then, either click on the location given on the terminal or visit http://localhost:8050/ to view the app.
